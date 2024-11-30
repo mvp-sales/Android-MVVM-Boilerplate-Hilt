@@ -3,7 +3,7 @@ package com.aregyan.github.di
 import android.content.Context
 import androidx.room.Room
 import com.aregyan.github.database.UsersDao
-import com.aregyan.github.database.UsersDatabase
+import com.aregyan.github.database.Database
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -16,17 +16,17 @@ import javax.inject.Singleton
 object DatabaseModule {
     @Provides
     @Singleton
-    fun provideAppDatabase(@ApplicationContext appContext: Context): UsersDatabase {
+    fun provideAppDatabase(@ApplicationContext appContext: Context): Database {
         return Room.databaseBuilder(
             appContext,
-            UsersDatabase::class.java,
+            Database::class.java,
             "Users"
         ).fallbackToDestructiveMigration().build()
     }
 
     @Provides
-    fun provideChannelDao(usersDatabase: UsersDatabase): UsersDao {
-        return usersDatabase.usersDao
+    fun provideChannelDao(database: Database): UsersDao {
+        return database.usersDao
     }
 
 }

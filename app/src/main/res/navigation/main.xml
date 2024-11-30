@@ -3,7 +3,23 @@
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/main"
-    app:startDestination="@id/users_list">
+    app:startDestination="@id/login_screen">
+
+    <fragment
+        android:id="@+id/login_screen"
+        android:name="com.aregyan.github.views.login.LoginFragment"
+        tools:layout="@layout/fragment_login">
+        <action
+            android:id="@+id/action_login_to_signup"
+            app:destination="@id/signup_screen">
+        </action>
+    </fragment>
+
+    <fragment
+        android:id="@+id/signup_screen"
+        android:name="com.aregyan.github.views.signup.SignupFragment"
+        tools:layout="@layout/fragment_signup">
+    </fragment>
 
     <fragment
         android:id="@+id/users_list"

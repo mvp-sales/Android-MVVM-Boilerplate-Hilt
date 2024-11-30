@@ -2,7 +2,7 @@ package com.aregyan.github.repository
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.map
-import com.aregyan.github.database.UsersDatabase
+import com.aregyan.github.database.Database
 import com.aregyan.github.database.asDomainModel
 import com.aregyan.github.domain.UserDetails
 import com.aregyan.github.network.UserDetailsService
@@ -12,7 +12,7 @@ import javax.inject.Inject
 
 class UserDetailsRepository @Inject constructor(
     private val userDetailsService: UserDetailsService,
-    private val database: UsersDatabase
+    private val database: Database
 ) {
 
     fun getUserDetails(user: String): LiveData<UserDetails?> {
