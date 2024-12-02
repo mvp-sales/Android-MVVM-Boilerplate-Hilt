@@ -78,11 +78,7 @@ class LoginFragment: Fragment() {
                         if (viewState.success) {
                             findNavController().navigate(LoginFragmentDirections.actionLoginToHome())
                         } else {
-                            Toast.makeText(
-                                requireContext(),
-                                "Authentication failed: wrong credentials",
-                                Toast.LENGTH_LONG
-                            ).show()
+                            passwordFieldInputLayout.error = "Authentication failed (Wrong credentials)"
                         }
                     }
                     LoginViewModel.UiState.OnRegisterClicked -> {
@@ -91,5 +87,10 @@ class LoginFragment: Fragment() {
                 }
             }
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        viewModel.resetState()
     }
 }

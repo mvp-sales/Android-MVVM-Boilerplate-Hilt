@@ -43,6 +43,14 @@ class HomeFragment: Fragment() {
                 findNavController().navigate(HomeFragmentDirections.actionHomeToImageDetails(it.id))
             }
 
+            nextPageBtn.setOnClickListener {
+                viewModel.fetchNextPage()
+            }
+
+            previousPageBtn.setOnClickListener {
+                viewModel.fetchPreviousPage()
+            }
+
             viewModel.uiState.observe(viewLifecycleOwner) { uiState ->
                 when (uiState) {
                     HomeViewModel.UiState.Initial -> {}
@@ -57,5 +65,10 @@ class HomeFragment: Fragment() {
         }
 
         viewModel.fetchImages()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        viewModel.resetState()
     }
 }

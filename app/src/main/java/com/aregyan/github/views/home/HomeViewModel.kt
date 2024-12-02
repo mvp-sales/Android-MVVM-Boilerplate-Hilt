@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.aregyan.github.repository.HomeRepository
+import com.aregyan.github.views.login.LoginViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -17,12 +18,12 @@ class HomeViewModel @Inject constructor(
 
     private val _uiState = MutableLiveData<UiState>(UiState.Initial)
     val uiState: LiveData<UiState> = _uiState
-    private var currentPage: Int = 0
+    private var currentPage: Int = 1
 
     fun fetchImages() {
         _uiState.value = UiState.Loading
         viewModelScope.launch(Dispatchers.IO) {
-            homeRepository.fetchImages(++currentPage).collect { imagesData ->
+            homeRepository.fetchImages(currentPage).collect { imagesData ->
                 _uiState.postValue(
                     UiState.Loaded(
                         imagesData.map {
@@ -32,6 +33,22 @@ class HomeViewModel @Inject constructor(
                 )
             }
         }
+    }
+
+    fun fetchNextPage() {
+        currentPage++
+        fetchImages()
+    }
+
+    fun fetchPreviousPage() {
+        if (currentPage > 1) {
+            currentPage--
+            fetchImages()
+        }
+    }
+
+    fun resetState() {
+        _uiState.value = UiState.Initial
     }
 
     sealed class UiState {

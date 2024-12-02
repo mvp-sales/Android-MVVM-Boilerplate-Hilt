@@ -44,6 +44,10 @@ class LoginViewModel @Inject constructor(
         _loginViewDataLiveData.value = _loginViewDataLiveData.value?.copy(password = password)
     }
 
+    fun resetState() {
+        _uiState.value = UiState.Initial
+    }
+
     sealed class UiState {
         data object Initial: UiState()
         data object OnLoginClicked: UiState()
