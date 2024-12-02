@@ -9,6 +9,8 @@ data class PixabayImageData(
     val downloads: Int,
     val likes: Int,
     val comments: Int,
+    val favorites: Int,
     val tags: String,
-    val type: String
+    val type: String,
+    val largeImageUrl: String
 )

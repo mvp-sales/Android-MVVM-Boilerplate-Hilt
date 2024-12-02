@@ -10,6 +10,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.aregyan.github.databinding.FragmentSignupBinding
 import com.aregyan.github.views.login.LoginFragmentDirections
+import com.gk.emon.lovelyLoading.LoadingPopup
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -65,9 +66,10 @@ class SignupFragment: Fragment() {
 
                     }
                     SignupViewModel.UiState.OnRegisterClicked -> {
-
+                        LoadingPopup.showLoadingPopUp()
                     }
                     SignupViewModel.UiState.OnRegisterSuccessful -> {
+                        LoadingPopup.hideLoadingPopUp()
                         findNavController().navigate(SignupFragmentDirections.actionSignupToHome())
                     }
                 }

@@ -9,6 +9,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import com.aregyan.github.databinding.FragmentImageDetailsBinding
 import com.bumptech.glide.Glide
+import com.gk.emon.lovelyLoading.LoadingPopup
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -36,10 +37,10 @@ class ImageDetailsFragment: Fragment() {
         viewModel.uiState.observe(viewLifecycleOwner) { uiState ->
             when (uiState) {
                 ImageDetailsViewModel.UiState.Initial -> {}
-                is ImageDetailsViewModel.UiState.Loading -> {
-
-                }
+                ImageDetailsViewModel.UiState.Loading ->
+                    LoadingPopup.showLoadingPopUp()
                 is ImageDetailsViewModel.UiState.Loaded -> {
+                    LoadingPopup.hideLoadingPopUp()
                     with(binding) {
                         pixabayImageSizeTv.text = "Size: ${uiState.imageData.imageSize}"
                         pixabayImageTypeTv.text = "Type: ${uiState.imageData.type}"
@@ -49,10 +50,11 @@ class ImageDetailsFragment: Fragment() {
                         pixabayImageViewsTv.text = "Views: ${uiState.imageData.views}"
                         pixabayImageLikesTv.text = "Likes: ${uiState.imageData.likes}"
                         pixabayImageCommentsTv.text = "Comments: ${uiState.imageData.comments}"
+                        pixabayImageFavoritesTv.text = "Favorites: ${uiState.imageData.favorites}"
                         pixabayImageDownloadsTv.text = "Downloads: ${uiState.imageData.downloads}"
 
                         Glide.with(requireView())
-                            .load(uiState.imageData.imageUrl)
+                            .load(uiState.imageData.largeImageUrl)
                             .centerCrop()
                             .into(pixabayImageIv)
                     }

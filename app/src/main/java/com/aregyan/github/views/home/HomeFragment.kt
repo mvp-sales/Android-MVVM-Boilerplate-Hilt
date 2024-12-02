@@ -9,6 +9,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.aregyan.github.databinding.FragmentHomeBinding
+import com.gk.emon.lovelyLoading.LoadingPopup
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -45,10 +46,10 @@ class HomeFragment: Fragment() {
             viewModel.uiState.observe(viewLifecycleOwner) { uiState ->
                 when (uiState) {
                     HomeViewModel.UiState.Initial -> {}
-                    is HomeViewModel.UiState.Loading -> {
-
-                    }
+                    HomeViewModel.UiState.Loading ->
+                        LoadingPopup.showLoadingPopUp()
                     is HomeViewModel.UiState.Loaded -> {
+                        LoadingPopup.hideLoadingPopUp()
                         adapter.submitList(uiState.imageDataList)
                     }
                 }

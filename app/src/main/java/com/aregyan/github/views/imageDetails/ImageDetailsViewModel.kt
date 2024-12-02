@@ -20,7 +20,7 @@ class ImageDetailsViewModel @Inject constructor(
     val uiState: LiveData<UiState> = _uiState
 
     fun fetchImage(id: Int) {
-        _uiState.value = UiState.Initial
+        _uiState.value = UiState.Loading
         viewModelScope.launch(Dispatchers.IO) {
             imageDetailsRepository.fetchImage(id).collect {
                 _uiState.postValue(UiState.Loaded(it))
@@ -30,7 +30,7 @@ class ImageDetailsViewModel @Inject constructor(
 
     sealed class UiState {
         data object Initial: UiState()
-        data class Loading(val isLoading: Boolean): UiState()
+        data object Loading: UiState()
         data class Loaded(val imageData: PixabayImageData): UiState()
     }
 }

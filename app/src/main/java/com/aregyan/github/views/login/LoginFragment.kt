@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.aregyan.github.databinding.FragmentLoginBinding
+import com.gk.emon.lovelyLoading.LoadingPopup
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -17,6 +18,14 @@ class LoginFragment: Fragment() {
 
     private val viewModel: LoginViewModel by viewModels()
     private lateinit var binding: FragmentLoginBinding
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        LoadingPopup.getInstance(requireActivity())
+            .defaultLovelyLoading()
+            .build()
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -62,9 +71,10 @@ class LoginFragment: Fragment() {
 
                     }
                     LoginViewModel.UiState.OnLoginClicked -> {
-
+                        LoadingPopup.showLoadingPopUp()
                     }
                     is LoginViewModel.UiState.OnLoginResult -> {
+                        LoadingPopup.hideLoadingPopUp()
                         if (viewState.success) {
                             findNavController().navigate(LoginFragmentDirections.actionLoginToHome())
                         } else {

@@ -22,12 +22,16 @@ data class PixabayItemResponse(
     val likes: Int,
     @Json(name = "comments")
     val comments: Int,
+    @Json(name = "collections")
+    val favorites: Int,
     @Json(name = "tags")
     val tags: String,
     @Json(name = "type")
     val type: String,
+    @Json(name = "largeImageURL")
+    val largeImageUrl: String,
 )
 
 fun PixabayItemResponse.toDomain() = PixabayImageData(
-    id, imageUrl, user, imageSize, views, downloads, likes, comments, tags, type
+    id, imageUrl, user, imageSize, views, downloads, likes, comments, favorites, tags, type, largeImageUrl
 )

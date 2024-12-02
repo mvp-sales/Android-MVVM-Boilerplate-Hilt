@@ -20,7 +20,7 @@ class HomeViewModel @Inject constructor(
     private var currentPage: Int = 0
 
     fun fetchImages() {
-        _uiState.value = UiState.Loading(true)
+        _uiState.value = UiState.Loading
         viewModelScope.launch(Dispatchers.IO) {
             homeRepository.fetchImages(++currentPage).collect { imagesData ->
                 _uiState.postValue(
@@ -36,7 +36,7 @@ class HomeViewModel @Inject constructor(
 
     sealed class UiState {
         data object Initial: UiState()
-        data class Loading(val isLoading: Boolean): UiState()
+        data object Loading: UiState()
         data class Loaded(val imageDataList: List<ImageViewData>): UiState()
     }
 }
