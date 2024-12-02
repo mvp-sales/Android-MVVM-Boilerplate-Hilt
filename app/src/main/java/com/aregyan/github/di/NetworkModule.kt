@@ -1,8 +1,7 @@
 package com.aregyan.github.di
 
 import com.aregyan.github.BuildConfig
-import com.aregyan.github.network.UserDetailsService
-import com.aregyan.github.network.UserListService
+import com.aregyan.github.network.PixabayService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -35,18 +34,12 @@ object NetworkModule {
     @Provides
     fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit = Retrofit.Builder()
         .addConverterFactory(MoshiConverterFactory.create())
-        .baseUrl("https://api.github.com/")
+        .baseUrl("https://pixabay.com/api/")
         .client(okHttpClient)
         .build()
 
     @Provides
     @Singleton
-    fun provideApiService(retrofit: Retrofit): UserListService =
-        retrofit.create(UserListService::class.java)
-
-    @Provides
-    @Singleton
-    fun provideUserDetailsService(retrofit: Retrofit): UserDetailsService =
-        retrofit.create(UserDetailsService::class.java)
-
+    fun providePixabayService(retrofit: Retrofit): PixabayService =
+        retrofit.create(PixabayService::class.java)
 }

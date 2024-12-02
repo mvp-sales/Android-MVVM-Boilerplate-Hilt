@@ -3,9 +3,12 @@ package com.aregyan.github.views.signup
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.aregyan.github.domain.User
 import com.aregyan.github.repository.SignupRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -16,8 +19,8 @@ class SignupViewModel @Inject constructor(
     private val _signupViewDataLiveData = MutableLiveData(SignupViewData("", "", age = -1))
     val signupViewDataLiveData: LiveData<SignupViewData> = _signupViewDataLiveData
 
-    private val _viewStateLiveData = MutableLiveData<ViewState>(ViewState.Initial)
-    val viewStateLiveData: LiveData<ViewState> = _viewStateLiveData
+    private val _uiState = MutableLiveData<UiState>(UiState.Initial)
+    val uiState: LiveData<UiState> = _uiState
 
     fun updateEmail(email: String) {
         _signupViewDataLiveData.value = _signupViewDataLiveData.value?.copy(email = email)
@@ -34,16 +37,19 @@ class SignupViewModel @Inject constructor(
     }
 
     fun onRegister() {
-        _viewStateLiveData.value = ViewState.OnRegisterSuccessful
+        _uiState.value = UiState.OnRegisterSuccessful
         _signupViewDataLiveData.value?.let {
-            signupRepository.signUp(User(it.email, it.password, it.age))
-            _viewStateLiveData.value = ViewState.OnRegisterSuccessful
+            viewModelScope.launch(Dispatchers.IO) {
+                signupRepository.signUp(User(it.email, it.password, it.age)).collect {
+                    _uiState.postValue(UiState.OnRegisterSuccessful)
+                }
+            }
         }
     }
 
-    sealed class ViewState {
-        data object Initial: ViewState()
-        data object OnRegisterClicked: ViewState()
-        data object OnRegisterSuccessful: ViewState()
+    sealed class UiState {
+        data object Initial: UiState()
+        data object OnRegisterClicked: UiState()
+        data object OnRegisterSuccessful: UiState()
     }
 }

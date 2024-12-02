@@ -7,7 +7,9 @@ import android.view.ViewGroup
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.aregyan.github.databinding.FragmentSignupBinding
+import com.aregyan.github.views.login.LoginFragmentDirections
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -57,16 +59,16 @@ class SignupFragment: Fragment() {
                 } else null
                 signupRegButton.isEnabled = it.isEmailValid && it.isPasswordValid && it.isAgeValid
             }
-            viewModel.viewStateLiveData.observe(viewLifecycleOwner) { viewState ->
+            viewModel.uiState.observe(viewLifecycleOwner) { viewState ->
                 when (viewState) {
-                    SignupViewModel.ViewState.Initial -> {
+                    SignupViewModel.UiState.Initial -> {
 
                     }
-                    SignupViewModel.ViewState.OnRegisterClicked -> {
+                    SignupViewModel.UiState.OnRegisterClicked -> {
 
                     }
-                    SignupViewModel.ViewState.OnRegisterSuccessful -> {
-
+                    SignupViewModel.UiState.OnRegisterSuccessful -> {
+                        findNavController().navigate(SignupFragmentDirections.actionSignupToHome())
                     }
                 }
             }
