@@ -9,7 +9,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.aregyan.github.databinding.FragmentSignupBinding
-import com.aregyan.github.views.login.LoginFragmentDirections
 import com.gk.emon.lovelyLoading.LoadingPopup
 import dagger.hilt.android.AndroidEntryPoint
 
